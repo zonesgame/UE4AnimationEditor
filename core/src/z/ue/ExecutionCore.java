@@ -65,14 +65,15 @@ public class ExecutionCore {
         if (isCancel)
             operatingSavePool.add(new ZEvent(SetCurAnimation, animation));
 
-        curAnimation = animation;
+        curAnimation[typeScrollPane] = animation;
         ((Label) getActor(LABEL_ANIMATION[typeScrollPane])).setText( animation.toString());
         List listFrames = (List) getActor(LIST_FRAME[typeScrollPane]);
         listFrames.clearItems();
         listFrames.setItems(animation.frames);
         listFrames.setSelectedIndex(0);
 
-        aniPlayControl.setKeyFrames(animation.frames.size);
+        if (typeScrollPane == TYPE_EDITOR_UI)
+            aniPlayControl.setKeyFrames(animation.frames.size);
 
         setCurFrame((Frame) listFrames.getSelected(), typeScrollPane, false);
     }
@@ -81,7 +82,7 @@ public class ExecutionCore {
         int typeScrollPane = TYPE_EDITOR_UI;
 
         List listAnimation = (List) getActor(LIST_ANIMATION[typeScrollPane]);
-        if (curAnimation == null) {
+        if (curAnimation[typeScrollPane] == null) {
             listAnimation.setSelectedIndex(0);
             setCurAnimation((Animation) listAnimation.getSelected(), typeScrollPane, isCancel);
             return;
@@ -89,7 +90,7 @@ public class ExecutionCore {
 
         int curaniIndex = listAnimation.getSelectedIndex();
         if (curaniIndex == -1) {
-            listAnimation.setSelected(curAnimation);
+            listAnimation.setSelected(curAnimation[typeScrollPane]);
             curaniIndex = listAnimation.getSelectedIndex();
         }
         int anilength = listAnimation.getItems().size;
@@ -109,17 +110,16 @@ public class ExecutionCore {
         if (isCancel)
             operatingSavePool.add(new ZEvent(SetCurFrame, frame));
 
-        preFrame = curFrame == null ? frame : curFrame;
-        curFrame = frame;
+        preFrame = curFrame[typeScrollPane] == null ? frame : curFrame[typeScrollPane];
+        curFrame[typeScrollPane] = frame;
         ((Label) getActor(LABEL_FRAMES[typeScrollPane])).setText( frame.toString());
         if (typeScrollPane == TYPE_EDITOR_UI)
-            ((Label) getActor(LABEL_DESCRIPTION)).setText("[RED]" + frame.toString()  + "     " +  "[BLUE]" + curAnimation.toString());
+            ((Label) getActor(LABEL_DESCRIPTION)).setText("[RED]" + frame.toString()  + "     " +  "[BLUE]" + curAnimation[typeScrollPane].toString());
     }
 
     public void nextFrame(int addvalue, boolean isCancel) {
-        if ( curAnimation == null)	return;
-
         int typeScrollPane = TYPE_EDITOR_UI;
+        if ( curAnimation[typeScrollPane] == null)	return;
 
         List listFrames = (List) getActor(LIST_FRAME[typeScrollPane]);
         int curframeIndex = listFrames.getSelectedIndex();
@@ -139,17 +139,18 @@ public class ExecutionCore {
     }
 
     public void frameMove(int addx, int addy, boolean isCancel) {
-        if (curAnimation == null)	return;
+        int typeScrollPane = TYPE_EDITOR_UI;
+        if (curAnimation[typeScrollPane] == null)	return;
 
         if (isCancel)
             operatingSavePool.add(new ZEvent(CancelFrameMove, curAnimation, curFrame, isSequenceMove, addx, addy));
 
         if ( !isSequenceMove) {	// 当前帧位置移动
-            curFrame.offsetX += addx;
-            curFrame.offsetY += addy;
+            curFrame[typeScrollPane].offsetX += addx;
+            curFrame[typeScrollPane].offsetY += addy;
         }
         else {		// 当前动画位置移动
-            for (Frame fra : curAnimation.frames) {
+            for (Frame fra : curAnimation[typeScrollPane].frames) {
                 fra.offsetX += addx;
                 fra.offsetY += addy;
             }

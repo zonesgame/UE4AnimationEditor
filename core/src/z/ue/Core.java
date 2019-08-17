@@ -45,8 +45,9 @@ public class Core {
 
     public static Array<Animation> animations, bgAnimations;
 
-    public static Animation curAnimation;
-    public static Frame curFrame, preFrame, curBGFrame;
+    public static Animation[] curAnimation = new Animation[2];
+    public static Frame[] curFrame = new Frame[2];
+    public static Frame preFrame;
     public static AnimationPlayControl aniPlayControl;
 
     public static Array<ZResize> needResizeArray = new Array(8);

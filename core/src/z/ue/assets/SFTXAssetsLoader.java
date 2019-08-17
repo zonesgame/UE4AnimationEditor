@@ -37,6 +37,11 @@ public class SFTXAssetsLoader implements AssetsLoader {
     }
 
     @Override
+    public Array getBackgroundAnimations() {
+        return animations;
+    }
+
+    @Override
     public String getEditSaveFile() {
         return editSaveFile;
     }

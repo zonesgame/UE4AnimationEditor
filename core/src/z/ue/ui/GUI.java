@@ -73,6 +73,7 @@ public class GUI implements ZResize {
 
         needResizeArray.add( new EditAnimationGroup());
         needResizeArray.add( new BGroundAnimationGroup());
+//        new ZUITest(uiNode1);
 
         Skin skin = Assets.skin;
 //		skin.getAtlas().getTextures().iterator().next().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);

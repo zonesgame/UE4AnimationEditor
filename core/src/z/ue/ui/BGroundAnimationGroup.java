@@ -75,6 +75,8 @@ public class BGroundAnimationGroup implements ZResize {
         Table rightSideTable = new Table(skin);
         rightSideTable.add(labelAnimation).growX().row();
         rightSideTable.add(scrollPaneAnimation).grow();
+//        rightSideTable.add(labelAnimation).row();
+//        rightSideTable.add(scrollPaneAnimation);
 
         listFrames = new List(skin);
         listFrames.setName(LIST_FRAME[TYPE_BG_UI]);
@@ -91,19 +93,20 @@ public class BGroundAnimationGroup implements ZResize {
         leftSideTable.add(labelFrames).growX().row();
         leftSideTable.add(scrollPaneFrames).grow();
 
-        SplitPane splitPane = new SplitPane(rightSideTable, leftSideTable, false, skin, "default-horizontal");
+        SplitPane splitPane = new SplitPane(leftSideTable, rightSideTable, false, skin, "default-horizontal");
 
         window = new Window("BackGroundRender", skin);
         window.getTitleTable().add(new TextButton("X", skin)).height(window.getPadTop());
-        window.setPosition(0, 600);
+        window.setPosition(0, 0);
         window.defaults().spaceBottom(10);
 
         window.row().fill().expandX();
         window.add(checkBox);
-        window.add(slider).minWidth(100).fillX().colspan(3);
+        window.add(slider).maxWidth(100).fillX().colspan(3);
 
         window.row();
-        window.add(splitPane).fill().expand().colspan(4).maxHeight(300).maxWidth(300);
+        window.add(splitPane).fill().expand().colspan(4).minHeight(400).minWidth(300);
+        window.row();
 
         window.pack();
 

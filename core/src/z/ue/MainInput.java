@@ -23,6 +23,7 @@ import z.ue.utils.ZResize;
 
 import static z.ue.Cons.LIST_ANIMATION;
 import static z.ue.Cons.LIST_FRAME;
+import static z.ue.Cons.TYPE_BG_UI;
 import static z.ue.Cons.TYPE_EDITOR_UI;
 import static z.ue.Core.*;
 import static z.ue.Core.aniPlayControl;
@@ -108,12 +109,20 @@ public class MainInput extends ApplicationAdapter {
 		loader = new SFTXAssetsLoader();
 		animations = loader.getAnimations();
 
-		loadEditorAnimation(loader.getEditSaveFile());
+		loadEditorAnimation(loader.getEditSaveFile());		// load save data
 
 		List listAnimation = (List) getActor(LIST_ANIMATION[TYPE_EDITOR_UI]);
 		listAnimation.clearItems();
 		listAnimation.setItems(animations);
 		executionCore.nextAnimation(0, false);		//  set current play animation
+
+		bgAnimations = loader.getBackgroundAnimations();
+		if (bgAnimations != null) {
+			List tmpListAnimation = (List) getActor(LIST_ANIMATION[TYPE_BG_UI]);
+			tmpListAnimation.clearItems();
+			tmpListAnimation.setItems(bgAnimations);
+			executionCore.setCurAnimation(bgAnimations.get(0), TYPE_BG_UI, false);		//  set current play animation
+		}
 	}
 
 	@Override
@@ -167,7 +176,7 @@ public class MainInput extends ApplicationAdapter {
 		if (isPlay) {
 			aniPlayControl.update(delta);
 			int frameIndex = aniPlayControl.getKeyFrame();
-			Frame frame = curAnimation.getFrame(frameIndex);
+			Frame frame = curAnimation[TYPE_EDITOR_UI].getFrame(frameIndex);
 			if ( !frame.equals(curFrame)) {
 				executionCore.setCurFrame(frame, TYPE_EDITOR_UI, false);
 				((List) getActor(LIST_FRAME[TYPE_EDITOR_UI])).setSelected(frame);
@@ -180,7 +189,7 @@ public class MainInput extends ApplicationAdapter {
 			batch.draw(preFrame.texture, CENTER.x + preFrame.offsetX, CENTER.y + preFrame.offsetY);
 			batch.setColor(1, 1, 1, 0.6f);
 		}
-		batch.draw(curFrame.texture, CENTER.x + curFrame.offsetX, CENTER.y + curFrame.offsetY);
+		batch.draw(curFrame[TYPE_EDITOR_UI].texture, CENTER.x + curFrame[TYPE_EDITOR_UI].offsetX, CENTER.y + curFrame[TYPE_EDITOR_UI].offsetY);
 		batch.setColor(Color.WHITE);
 		batch.end();
 
@@ -191,7 +200,7 @@ public class MainInput extends ApplicationAdapter {
 		shapeRenderer.begin();
 		shapeRenderer.set(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(0, 0, 1, 1f);
-		shapeRenderer.rect(CENTER.x + curFrame.offsetX - 1, CENTER.y + curFrame.offsetY - 1, curFrame.getWidth() + 2, curFrame.getHeight() + 2);
+		shapeRenderer.rect(CENTER.x + curFrame[TYPE_EDITOR_UI].offsetX - 1, CENTER.y + curFrame[TYPE_EDITOR_UI].offsetY - 1, curFrame[TYPE_EDITOR_UI].getWidth() + 2, curFrame[TYPE_EDITOR_UI].getHeight() + 2);
 		shapeRenderer.end();
 	}
 

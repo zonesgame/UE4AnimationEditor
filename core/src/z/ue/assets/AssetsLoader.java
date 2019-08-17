@@ -10,6 +10,8 @@ public interface AssetsLoader<T> extends Disposable {
 
     public Array<T> getAnimations();
 
+    public Array<T> getBackgroundAnimations();
+
     public String getEditSaveFile();
 
 }

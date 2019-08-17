@@ -10,6 +10,7 @@ import z.ue.Vec;
 
 import static z.ue.Cons.BUTTON_PLAYER;
 import static z.ue.Cons.CHECKBOX_SHOWBOUND;
+import static z.ue.Cons.TYPE_EDITOR_UI;
 import static z.ue.Core.CENTER;
 import static z.ue.Core.curFrame;
 import static z.ue.Core.frameRect;
@@ -161,7 +162,7 @@ public class ZonesInputProcessor implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        frameRect.set(CENTER.x + curFrame.offsetX, CENTER.y + curFrame.offsetY, curFrame.getWidth(), curFrame.getHeight());
+        frameRect.set(CENTER.x + curFrame[TYPE_EDITOR_UI].offsetX, CENTER.y + curFrame[TYPE_EDITOR_UI].offsetY, curFrame[TYPE_EDITOR_UI].getWidth(), curFrame[TYPE_EDITOR_UI].getHeight());
         if (frameRect.contains(screenX, screenY)) {
             preTouchPoint.set(screenX, screenY);
             isTouchdown = true;

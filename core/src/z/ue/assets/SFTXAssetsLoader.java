@@ -7,6 +7,8 @@ import com.badlogic.gdx.utils.Array;
 import z.ue.Animation;
 import z.ue.Frame;
 
+import static z.ue.utils.Tools.loadEditorAnimation;
+
 /**
  *
  */
@@ -21,24 +23,28 @@ public class SFTXAssetsLoader implements AssetsLoader {
     String editSaveFile = "D:\\Games\\目标软件\\三分天下\\素材\\19\\UE4\\texture\\" + editorName + "\\UE4Editor" + editorName + ".zsave";
     String textureSourceFoled = "D:\\Games\\目标软件\\三分天下\\素材\\19\\UE4\\texture\\" + editorName + "\\纹理";
 
-    Array<Animation> animations = null;
+
+//    private Array<Animation> animationsTmp = null;
 
     public SFTXAssetsLoader() {
     }
 
     @Override
     public Array<Animation> getAnimations() {
-        if (animations == null) {
-            animations = new Array<Animation>(64);
-            initSource();
-        }
+//        if (animations == null) {
+//            animations = new Array<Animation>(64);
+//            initSource();
+//        }
 
-        return animations;
+        Array<Animation> animationsTmp = initSource();
+        loadEditorAnimation(animationsTmp, getEditSaveFile());		// load save data
+
+        return animationsTmp;
     }
 
     @Override
     public Array getBackgroundAnimations() {
-        return animations;
+        return getAnimations();
     }
 
     @Override
@@ -46,7 +52,23 @@ public class SFTXAssetsLoader implements AssetsLoader {
         return editSaveFile;
     }
 
-    private void initSource() {
+    @Override
+    public String getAtlasTextureFile() {
+        return atlasTextureFile;
+    }
+
+    @Override
+    public String getAtlasShadowFile() {
+        return atlasShadowFile;
+    }
+
+    @Override
+    public String getSourceFoledShadow() {
+        return sourceFoledShadow;
+    }
+
+    private Array<Animation> initSource() {
+        Array<Animation> animations = new Array<Animation>(64);
         FileHandle sourceHandle = Gdx.files.absolute(textureSourceFoled);
         for (FileHandle handle : sourceHandle.list()) {
             FileHandle[] foledList = handle.list();
@@ -70,6 +92,8 @@ public class SFTXAssetsLoader implements AssetsLoader {
                 }
             }
         }
+
+        return animations;
     }
 
     @Override

@@ -12,10 +12,11 @@ import static z.ue.Cons.BUTTON_PLAYER;
 import static z.ue.Cons.CHECKBOX_SHOWBOUND;
 import static z.ue.Cons.TYPE_EDITOR_UI;
 import static z.ue.Core.CENTER;
+import static z.ue.Core.animations;
 import static z.ue.Core.curFrame;
 import static z.ue.Core.frameRect;
 import static z.ue.Core.isFullScreen;
-import static z.ue.Core.isPlay;
+import static z.ue.Core.*;
 import static z.ue.Core.isSequenceMove;
 import static z.ue.Core.isShowFrameBound;
 import static z.ue.Core.isShowPreviousFrame;
@@ -27,7 +28,7 @@ import static z.ue.Core.resolutionRender;
 import static z.ue.event.ZEvent.FrameMove;
 import static z.ue.event.ZEvent.NextAnimation;
 import static z.ue.event.ZEvent.NextFrame;
-import static z.ue.utils.Tools.addZEvent;
+import static z.ue.utils.Tools.*;
 import static z.ue.utils.Tools.getActor;
 
 /**
@@ -56,7 +57,7 @@ public class ZonesInputProcessor implements InputProcessor {
         }
         else if (keycode == Input.Keys.S) {
             if (isCtrl) {
-//                saveEditor();
+                saveEditorAnimation(animations, loader.getEditSaveFile());
                 return true;
             }
 //            executionCore.nextFrame(-1);
@@ -80,6 +81,12 @@ public class ZonesInputProcessor implements InputProcessor {
         }
         else if (keycode == Input.Keys.C) {
             isSequenceMove = true;
+        }
+        else if (keycode == Input.Keys.P) {
+            isShowAni = !isShowAni;
+        }
+        else if (keycode == Input.Keys.O) {
+            isShowBG = !isShowBG;
         }
         else if (keycode == Input.Keys.Z) {        //  恢复上一走
             if (isCtrl)

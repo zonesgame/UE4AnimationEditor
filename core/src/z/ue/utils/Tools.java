@@ -18,7 +18,6 @@ import z.ue.Frame;
 import z.ue.Vec;
 import z.ue.event.ZEvent;
 
-import static z.ue.Core.animations;
 import static z.ue.Core.eventManager;
 import static z.ue.Core.stage;
 import static z.ue.event.ZEvent.UpdateShowMessage;
@@ -36,7 +35,7 @@ public class Tools {
         eventManager.addEvent(new ZEvent(type, objects));
     }
 
-    public static void loadEditorAnimation(String saveFile) {
+    public static void loadEditorAnimation(Array<Animation> animationArray, String saveFile) {
         FileHandle handle = Gdx.files.absolute(saveFile);
         if ( !handle.exists())	return;
 
@@ -67,7 +66,7 @@ public class Tools {
         }
 
         try {
-            for (Animation ani : animations) {
+            for (Animation ani : animationArray) {
                 for (Frame fra : ani.frames) {
                     fra.initOffset(saveMap.get(ani.name + "#" + fra.name));
                 }
@@ -77,11 +76,11 @@ public class Tools {
         }
     }
 
-    public static void saveEditorAnimation(Array<Animation> animations, String saveFile) {
+    public static void saveEditorAnimation(Array<Animation> _animations, String saveFile) {
         BufferedWriter outWriter = null;
         try {
             outWriter = new BufferedWriter(new OutputStreamWriter(Gdx.files.absolute(saveFile).write(false)));
-            for (Animation ani : animations) {
+            for (Animation ani : _animations) {
                 for (Frame fra : ani.frames) {
                     outWriter.write(ani.name + "#" + fra.name + ": " + fra.offsetX + "," + fra.offsetY + "\n");
                 }

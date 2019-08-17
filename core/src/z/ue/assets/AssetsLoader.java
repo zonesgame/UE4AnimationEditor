@@ -14,4 +14,10 @@ public interface AssetsLoader<T> extends Disposable {
 
     public String getEditSaveFile();
 
+    public String getAtlasTextureFile();
+
+    public String getAtlasShadowFile();
+
+    public String getSourceFoledShadow();
+
 }

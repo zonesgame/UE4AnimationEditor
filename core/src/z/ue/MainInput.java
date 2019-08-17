@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
-import z.ue.assets.AssetsLoader;
 import z.ue.assets.SFTXAssetsLoader;
 import z.ue.event.ZEventManager;
 import z.ue.input.ZonesChangeListener;
@@ -25,18 +24,24 @@ import static z.ue.Cons.LIST_ANIMATION;
 import static z.ue.Cons.LIST_FRAME;
 import static z.ue.Cons.TYPE_BG_UI;
 import static z.ue.Cons.TYPE_EDITOR_UI;
-import static z.ue.Core.*;
+import static z.ue.Core.CENTER;
+import static z.ue.Core.alphaBG;
 import static z.ue.Core.aniPlayControl;
 import static z.ue.Core.animations;
+import static z.ue.Core.bgAnimations;
 import static z.ue.Core.curAnimation;
 import static z.ue.Core.curFrame;
+import static z.ue.Core.eventManager;
 import static z.ue.Core.executionCore;
 import static z.ue.Core.frameDuration;
 import static z.ue.Core.isFullScreen;
 import static z.ue.Core.isLoop;
 import static z.ue.Core.isPlay;
+import static z.ue.Core.isShowAni;
+import static z.ue.Core.isShowBG;
 import static z.ue.Core.isShowFrameBound;
 import static z.ue.Core.isShowPreviousFrame;
+import static z.ue.Core.loader;
 import static z.ue.Core.needResizeArray;
 import static z.ue.Core.preFrame;
 import static z.ue.Core.preWindowsHeight;
@@ -50,7 +55,6 @@ import static z.ue.Core.zChangeListener;
 import static z.ue.Core.zClickListener;
 import static z.ue.Core.zInputProcessor;
 import static z.ue.utils.Tools.getActor;
-import static z.ue.utils.Tools.loadEditorAnimation;
 
 public class MainInput extends ApplicationAdapter {
 
@@ -63,7 +67,7 @@ public class MainInput extends ApplicationAdapter {
 
 
 
-	AssetsLoader loader;
+//	AssetsLoader loader;
 
 	private SettingsPreferences settings;
 
@@ -73,7 +77,12 @@ public class MainInput extends ApplicationAdapter {
 		aniPlayControl = new AnimationPlayControl(frameDuration * 0.05f);
 		if (isLoop)
 			aniPlayControl.setPlayMode(AnimationPlayControl.PlayMode.LOOP);
+
 		Assets.init();
+		loader = new SFTXAssetsLoader();
+		animations = loader.getAnimations();
+		bgAnimations = loader.getBackgroundAnimations();
+
 		eventManager = new ZEventManager();
 
 		batch = new SpriteBatch();
@@ -106,17 +115,11 @@ public class MainInput extends ApplicationAdapter {
 	}
 
 	private void initLoadAssets() {
-		loader = new SFTXAssetsLoader();
-		animations = loader.getAnimations();
-
-		loadEditorAnimation(loader.getEditSaveFile());		// load save data
-
 		List listAnimation = (List) getActor(LIST_ANIMATION[TYPE_EDITOR_UI]);
 		listAnimation.clearItems();
 		listAnimation.setItems(animations);
 		executionCore.nextAnimation(0, false);		//  set current play animation
 
-		bgAnimations = loader.getBackgroundAnimations();
 		if (bgAnimations != null) {
 			List tmpListAnimation = (List) getActor(LIST_ANIMATION[TYPE_BG_UI]);
 			tmpListAnimation.clearItems();
@@ -137,8 +140,10 @@ public class MainInput extends ApplicationAdapter {
 //		camera.update();
 		batch.setProjectionMatrix(camera.combined);
 
+		renderBackgroundAnimation();
+
 		float delta = Gdx.graphics.getDeltaTime();
-		updateAnimationPlay(delta);
+		renderAnimation(delta);
 
 		batch.begin();
 
@@ -170,8 +175,18 @@ public class MainInput extends ApplicationAdapter {
 //		}
 	}
 
-	public void updateAnimationPlay(float delta) {
-		if (curAnimation == null) return;
+	private void renderBackgroundAnimation() {
+		if ( !isShowBG || curAnimation[TYPE_BG_UI] == null)	return;
+
+		batch.begin();
+		batch.setColor(1, 1, 1, alphaBG);
+		batch.draw(curFrame[TYPE_BG_UI].texture, CENTER.x + curFrame[TYPE_BG_UI].offsetX, CENTER.y + curFrame[TYPE_BG_UI].offsetY);
+		batch.setColor(Color.WHITE);
+		batch.end();
+	}
+
+	private void renderAnimation(float delta) {
+		if (curAnimation[TYPE_EDITOR_UI] == null || !isShowAni) return;
 
 		if (isPlay) {
 			aniPlayControl.update(delta);
@@ -232,6 +247,7 @@ public class MainInput extends ApplicationAdapter {
 		batch.dispose();
 		stage.dispose();
 		Assets.dispose();
+		loader.dispose();
 	}
 
 }

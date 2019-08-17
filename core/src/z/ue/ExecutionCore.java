@@ -20,6 +20,7 @@ import static z.ue.Cons.LIST_FRAME;
 import static z.ue.Cons.TYPE_EDITOR_UI;
 import static z.ue.Core.aniPlayControl;
 import static z.ue.Core.animations;
+import static z.ue.Core.bgAnimations;
 import static z.ue.Core.curAnimation;
 import static z.ue.Core.curFrame;
 import static z.ue.Core.isSequenceMove;
@@ -52,11 +53,19 @@ public class ExecutionCore {
     }
 
     public void setTextureFilter(Texture.TextureFilter textureFilter) {
-        if (animations == null)	return;
+        if (animations != null)	{
+            for (Animation ani : animations) {
+                for (Frame fra : ani.frames) {
+                    fra.texture.setFilter(textureFilter, textureFilter);
+                }
+            }
+        }
 
-        for (Animation ani : animations) {
-            for (Frame fra : ani.frames) {
-                fra.texture.setFilter(textureFilter, textureFilter);
+        if (bgAnimations != null) {
+            for (Animation ani : bgAnimations) {
+                for (Frame fra : ani.frames) {
+                    fra.texture.setFilter(textureFilter, textureFilter);
+                }
             }
         }
     }

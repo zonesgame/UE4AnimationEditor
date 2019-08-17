@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import z.ue.assets.AssetsLoader;
 import z.ue.event.ZEventManager;
 import z.ue.input.ZonesChangeListener;
 import z.ue.input.ZonesClickListener;
@@ -29,6 +30,7 @@ public class Core {
     public static String gdxTextureFilter;
 
     public static boolean isShowBG;
+    public static boolean isShowAni = true;     // temp
     public static float alphaBG;
     // settings data end
 
@@ -49,6 +51,8 @@ public class Core {
     public static Frame[] curFrame = new Frame[2];
     public static Frame preFrame;
     public static AnimationPlayControl aniPlayControl;
+
+    public static AssetsLoader loader;
 
     public static Array<ZResize> needResizeArray = new Array(8);
 

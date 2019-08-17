@@ -34,6 +34,7 @@ import static z.ue.Core.gdxTextureFilter;
 import static z.ue.Core.isLoop;
 import static z.ue.Core.isPlay;
 import static z.ue.Core.isShowFrameBound;
+import static z.ue.Core.needResizeArray;
 import static z.ue.Core.viewportRender;
 import static z.ue.Core.viewportUI;
 import static z.ue.Core.zChangeListener;
@@ -70,8 +71,8 @@ public class GUI implements ZResize {
         uiNode1.setFillParent(true);
         stage.addActor(uiNode1);
 
-        new EditAnimationGroup();
-        new BGroundAnimationGroup();
+        needResizeArray.add( new EditAnimationGroup());
+        needResizeArray.add( new BGroundAnimationGroup());
 
         Skin skin = Assets.skin;
 //		skin.getAtlas().getTextures().iterator().next().setFilter(Texture.TextureFilter.Nearest, Texture.TextureFilter.Nearest);

@@ -8,9 +8,26 @@ import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 
 import z.ue.Vec;
 
-import static z.ue.Core.*;
-import static z.ue.utils.Tools.*;
-import static z.ue.Cons.*;
+import static z.ue.Cons.BUTTON_PLAYER;
+import static z.ue.Cons.CHECKBOX_SHOWBOUND;
+import static z.ue.Core.CENTER;
+import static z.ue.Core.curFrame;
+import static z.ue.Core.frameRect;
+import static z.ue.Core.isFullScreen;
+import static z.ue.Core.isPlay;
+import static z.ue.Core.isSequenceMove;
+import static z.ue.Core.isShowFrameBound;
+import static z.ue.Core.isShowPreviousFrame;
+import static z.ue.Core.maxResolutionRender;
+import static z.ue.Core.minResolutionRender;
+import static z.ue.Core.preWindowsHeight;
+import static z.ue.Core.preWindowsWidth;
+import static z.ue.Core.resolutionRender;
+import static z.ue.event.ZEvent.FrameMove;
+import static z.ue.event.ZEvent.NextAnimation;
+import static z.ue.event.ZEvent.NextFrame;
+import static z.ue.utils.Tools.addZEvent;
+import static z.ue.utils.Tools.getActor;
 
 /**
  *
@@ -31,21 +48,26 @@ public class ZonesInputProcessor implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+
         if (keycode == Input.Keys.W) {
-            executionCore.nextFrame(1);
+//            executionCore.nextFrame(1);
+            addZEvent(NextFrame, 1);
         }
         else if (keycode == Input.Keys.S) {
             if (isCtrl) {
 //                saveEditor();
                 return true;
             }
-            executionCore.nextFrame(-1);
+//            executionCore.nextFrame(-1);
+            addZEvent(NextFrame, -1);
         }
         else if (keycode == Input.Keys.A) {
-            executionCore.nextAnimation(1);
+//            executionCore.nextAnimation(1);
+            addZEvent(NextAnimation, 1);
         }
         else if (keycode == Input.Keys.D) {
-            executionCore.nextAnimation(-1);
+//            executionCore.nextAnimation(-1);
+            addZEvent(NextAnimation, -1);
         }
 
         else if (keycode == Input.Keys.CONTROL_LEFT) {
@@ -58,17 +80,29 @@ public class ZonesInputProcessor implements InputProcessor {
         else if (keycode == Input.Keys.C) {
             isSequenceMove = true;
         }
+        else if (keycode == Input.Keys.Z) {        //  恢复上一走
+            if (isCtrl)
+                ;
+        }
+        else if (keycode == Input.Keys.Y) {         // 恢复下一步
+            if (isCtrl)
+                ;
+        }
         else if (keycode == Input.Keys.UP) {
-            executionCore.frameMove( 0, moveAdd);
+//            executionCore.frameMove( 0, moveAdd);
+            addZEvent(FrameMove, 0, moveAdd);
         }
         else if (keycode == Input.Keys.DOWN) {
-            executionCore.frameMove( 0, -moveAdd);
+//            executionCore.frameMove( 0, -moveAdd);
+            addZEvent(FrameMove, 0, -moveAdd);
         }
         else if (keycode == Input.Keys.LEFT) {
-            executionCore.frameMove( -moveAdd, 0);
+//            executionCore.frameMove( -moveAdd, 0);
+            addZEvent(FrameMove, -moveAdd, 0);
         }
         else if (keycode == Input.Keys.RIGHT) {
-            executionCore.frameMove( moveAdd, 0);
+//            executionCore.frameMove( moveAdd, 0);
+            addZEvent(FrameMove, moveAdd, 0);
         }
 
         else if (keycode == Input.Keys.Q) {
@@ -149,8 +183,9 @@ public class ZonesInputProcessor implements InputProcessor {
             int addx = screenX - preTouchPoint.x;
             int addy = screenY - preTouchPoint.y;
             preTouchPoint.set(screenX, screenY);
-            curFrame.offsetX += addx;
-            curFrame.offsetY += addy;
+//            curFrame.offsetX += addx;
+//            curFrame.offsetY += addy;
+            addZEvent(FrameMove, addx, addy);
         }
         return false;
     }

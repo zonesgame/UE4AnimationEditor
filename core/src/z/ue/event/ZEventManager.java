@@ -6,13 +6,17 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import z.ue.Animation;
+import z.ue.Frame;
 
 import static z.ue.Core.executionCore;
-import static z.ue.event.ZEvent.NEXTANIMATION;
-import static z.ue.event.ZEvent.SETCURANIMATION;
-import static z.ue.event.ZEvent.SETCURFRAME;
-import static z.ue.event.ZEvent.TEXTUREFILTER;
-import static z.ue.event.ZEvent.UPDATE_SHOWMESSAGE;
+import static z.ue.event.ZEvent.CancelFrameMove;
+import static z.ue.event.ZEvent.FrameMove;
+import static z.ue.event.ZEvent.NextAnimation;
+import static z.ue.event.ZEvent.NextFrame;
+import static z.ue.event.ZEvent.SetCurAnimation;
+import static z.ue.event.ZEvent.SetCurFrame;
+import static z.ue.event.ZEvent.SetTextureFilter;
+import static z.ue.event.ZEvent.UpdateShowMessage;
 
 /**
  *
@@ -20,6 +24,7 @@ import static z.ue.event.ZEvent.UPDATE_SHOWMESSAGE;
 public class ZEventManager {
 
     private Queue<ZEvent> zInputsEvent = new ConcurrentLinkedQueue<ZEvent>();
+//    private Array<>
 
     public ZEventManager() {
 
@@ -31,43 +36,49 @@ public class ZEventManager {
 
     public void update() {
         while ( !zInputsEvent.isEmpty()) {
-            ZEvent event = this.zInputsEvent.poll();
+            executeEvent(this.zInputsEvent.poll());
         }
     }
 
     private void executeEvent(ZEvent event) {
-        switch(event.type) {
-            case TEXTUREFILTER:
+        boolean isBeCancle = false;
+
+        switch (event.type) {
+            case SetTextureFilter:
                 executionCore.setTextureFilter((Texture.TextureFilter) event.parameterArray.get(0));
                 break;
 
-            case UPDATE_SHOWMESSAGE:
+            case UpdateShowMessage:
                 executionCore.updateShowMessage((String) event.parameterArray.get(0));
                 break;
 
-            case SETCURANIMATION:
-                executionCore.setCurAnimation((Animation) event.parameterArray.get(0));
+            case SetCurAnimation:
+                executionCore.setCurAnimation((Animation) event.parameterArray.get(0), (Integer) event.parameterArray.get(1), isBeCancle);
                 break;
 
-            case NEXTANIMATION:
-                executionCore.nextAnimation((Integer) event.parameterArray.get(0));
+            case NextAnimation:
+                executionCore.nextAnimation((Integer) event.parameterArray.get(0), isBeCancle);
                 break;
 
-            case SETCURFRAME:
-                ;
+            case SetCurFrame:
+                executionCore.setCurFrame((Frame) event.parameterArray.get(0), (Integer) event.parameterArray.get(1), isBeCancle);
                 break;
 
-            case SETCURANIMATION:
-                ;
+            case NextFrame:
+                executionCore.nextFrame((Integer) event.parameterArray.get(0), isBeCancle);
                 break;
 
-            case SETCURANIMATION:
-                ;
+            case FrameMove:
+                executionCore.frameMove((Integer) event.parameterArray.get(0), (Integer) event.parameterArray.get(1), isBeCancle);
+                break;
+
+            case CancelFrameMove:
+//                executionCore.cancelFrameMove();
                 break;
 
             default:
                 ;
-
+        }
     }
 
 }

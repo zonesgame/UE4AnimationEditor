@@ -25,6 +25,9 @@ public class SettingsPreferences {
     private final String FRAMEDURATION = "frameDuration";
     private final String TEXTUREFILTER = "gdxTextureFilter";
 
+    private final String ISSHOWBG = "isShowBG";
+    private final String ALPHABG = "alphaBG";
+
     private Preferences prefs;
 
 
@@ -41,10 +44,13 @@ public class SettingsPreferences {
         isShowFrameBound = prefs.getBoolean(ISSHOWFRAMEBOUND, false);
         isShowPreviousFrame = prefs.getBoolean(ISSHOWPREVIOUSFRAME, false);
         isFullScreen = prefs.getBoolean(ISFULLSCREEN, false);
+        isShowBG = prefs.getBoolean(ISSHOWBG, true);
 
         frameDuration = prefs.getInteger(FRAMEDURATION, 4);
         preWindowsWidth = prefs.getInteger(SCREEN_WIDTH, 1280);
         preWindowsHeight = prefs.getInteger(SCREEN_HEIGHT, 720);
+
+        alphaBG = prefs.getFloat(ALPHABG, 1);
 
         gdxTextureFilter = prefs.getString(TEXTUREFILTER, Texture.TextureFilter.Nearest.name());
 
@@ -61,10 +67,13 @@ public class SettingsPreferences {
         prefs.putBoolean(ISSHOWFRAMEBOUND, isShowFrameBound);
         prefs.putBoolean(ISSHOWPREVIOUSFRAME, isShowPreviousFrame);
         prefs.putBoolean(ISFULLSCREEN, isFullScreen);
+        prefs.putBoolean(ISSHOWBG, isShowBG);
 
         prefs.putInteger(FRAMEDURATION, frameDuration);
         prefs.putInteger(SCREEN_WIDTH, preWindowsWidth);
         prefs.putInteger(SCREEN_HEIGHT, preWindowsHeight);
+
+        prefs.putFloat(ALPHABG, alphaBG);
 
         prefs.putString(TEXTUREFILTER, gdxTextureFilter);
 

@@ -14,9 +14,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Window;
 import z.ue.Assets;
 import z.ue.utils.ZResize;
 
+import static z.ue.Cons.CHECKBOX_SHOW_BG;
+import static z.ue.Cons.LABEL_ANIMATION;
+import static z.ue.Cons.LABEL_FRAMES;
 import static z.ue.Cons.LIST_ANIMATION;
 import static z.ue.Cons.LIST_FRAME;
+import static z.ue.Cons.SCROLLPANE_ANIMATION;
+import static z.ue.Cons.SCROLLPANE_FRAME;
+import static z.ue.Cons.SLIDER_ALPHA__BG;
 import static z.ue.Cons.TABLE_ZROOT;
+import static z.ue.Cons.TYPE_BG_UI;
+import static z.ue.Core.alphaBG;
+import static z.ue.Core.isShowBG;
 import static z.ue.Core.zChangeListener;
 import static z.ue.utils.Tools.getActor;
 
@@ -31,6 +40,8 @@ public class BGroundAnimationGroup implements ZResize {
 //    private Label labelAnimation;
 //    private Label labelFrames;
 
+    private Window window;
+
     private List listAnimation;
     private List listFrames;
 
@@ -42,40 +53,49 @@ public class BGroundAnimationGroup implements ZResize {
         Skin skin = Assets.skin;
 
         final CheckBox checkBox = new CheckBox("is show", skin);
-        checkBox.setChecked(true);
+        checkBox.setName(CHECKBOX_SHOW_BG);
+        checkBox.setChecked(isShowBG);
+        checkBox.addCaptureListener(zChangeListener);
         final Slider slider = new Slider(0, 10, 1, false, skin);
+        slider.setName(SLIDER_ALPHA__BG);
+        slider.setValue(alphaBG * 10);
+        slider.addCaptureListener(zChangeListener);
 
         listAnimation = new List(skin);
-        listAnimation.setName(LIST_ANIMATION);
+        listAnimation.setName(LIST_ANIMATION[TYPE_BG_UI]);
         listAnimation.getSelection().setMultiple(true);
         listAnimation.getSelection().setRequired(false);
         // list.getSelection().setToggle(true);
 
         ScrollPane scrollPaneAnimation = new ScrollPane(listAnimation, skin);
+        scrollPaneAnimation.setName(SCROLLPANE_ANIMATION[TYPE_BG_UI]);
         scrollPaneAnimation.setFlickScroll(false);
         Label labelAnimation = new Label("", skin); // demos SplitPane respecting widget's minWidth
+        labelAnimation.setName(LABEL_ANIMATION[TYPE_BG_UI]);
         Table rightSideTable = new Table(skin);
         rightSideTable.add(labelAnimation).growX().row();
         rightSideTable.add(scrollPaneAnimation).grow();
 
         listFrames = new List(skin);
-        listFrames.setName(LIST_FRAME);
+        listFrames.setName(LIST_FRAME[TYPE_BG_UI]);
         listFrames.getSelection().setMultiple(true);
         listFrames.getSelection().setRequired(false);
         // list.getSelection().setToggle(true);
 
         ScrollPane scrollPaneFrames = new ScrollPane(listFrames, skin);
+        scrollPaneFrames.setName(SCROLLPANE_FRAME[TYPE_BG_UI]);
         scrollPaneFrames.setFlickScroll(false);
         Label labelFrames = new Label("", skin); // demos SplitPane respecting widget's minWidth
+        labelFrames.setName(LABEL_FRAMES[TYPE_BG_UI]);
         Table leftSideTable = new Table(skin);
         leftSideTable.add(labelFrames).growX().row();
         leftSideTable.add(scrollPaneFrames).grow();
 
         SplitPane splitPane = new SplitPane(rightSideTable, leftSideTable, false, skin, "default-horizontal");
 
-        Window window = new Window("BackGroundRender", skin);
+        window = new Window("BackGroundRender", skin);
         window.getTitleTable().add(new TextButton("X", skin)).height(window.getPadTop());
-        window.setPosition(0, 0);
+        window.setPosition(0, 600);
         window.defaults().spaceBottom(10);
 
         window.row().fill().expandX();

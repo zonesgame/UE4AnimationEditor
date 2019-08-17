@@ -20,6 +20,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.tests.utils.GdxTest;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+import z.ue.event.ZEvent;
+
 /**
  *
  */
@@ -38,6 +43,11 @@ public class ZUITest extends GdxTest {
 
     @Override
     public void create () {
+        {
+            Queue<ZEvent> zInputsEvent = new ConcurrentLinkedQueue<ZEvent>();
+        }
+
+
         skin = new Skin(Gdx.files.internal("data/uiskin.json"));
         texture1 = new Texture(Gdx.files.internal("data/badlogicsmall.jpg"));
         texture2 = new Texture(Gdx.files.internal("data/badlogic.jpg"));

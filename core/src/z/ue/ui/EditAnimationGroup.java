@@ -18,6 +18,7 @@ import static z.ue.Cons.LIST_FRAME;
 import static z.ue.Cons.SCROLLPANE_ANIMATION;
 import static z.ue.Cons.SCROLLPANE_FRAME;
 import static z.ue.Cons.TABLE_ZROOT;
+import static z.ue.Cons.TYPE_EDITOR_UI;
 import static z.ue.Core.zChangeListener;
 import static z.ue.utils.Tools.getActor;
 
@@ -42,16 +43,16 @@ public class EditAnimationGroup implements ZResize {
     private void init() {
         Skin skin = Assets.skin;
         listAnimation = new List(skin);
-        listAnimation.setName(LIST_ANIMATION);
+        listAnimation.setName(LIST_ANIMATION[TYPE_EDITOR_UI]);
         listAnimation.getSelection().setMultiple(true);
         listAnimation.getSelection().setRequired(false);
         // list.getSelection().setToggle(true);
         ScrollPane scrollPaneAnimation = new ScrollPane(listAnimation, skin);
-        scrollPaneAnimation.setName(SCROLLPANE_ANIMATION);
+        scrollPaneAnimation.setName(SCROLLPANE_ANIMATION[TYPE_EDITOR_UI]);
         scrollPaneAnimation.setFlickScroll(false);
 //		scrollPaneAnimation.setScrollingDisabled(true, true);
         labelAnimation = new Label("", skin); // demos SplitPane respecting widget's minWidth
-        labelAnimation.setName(LABEL_ANIMATION);
+        labelAnimation.setName(LABEL_ANIMATION[TYPE_EDITOR_UI]);
         labelAnimation.setColor(Color.BLUE);
         windowAnimation = new Table(skin);
         windowAnimation.add(labelAnimation).row();
@@ -61,16 +62,16 @@ public class EditAnimationGroup implements ZResize {
         windowAnimation.setFillParent(true);
 
         listFrames = new List(skin);
-        listFrames.setName(LIST_FRAME);
+        listFrames.setName(LIST_FRAME[TYPE_EDITOR_UI]);
 //		listFrames.setItems("  dsfds        ", "bbbbbbbb0", "ccccccccccc", "dddddddddddd");
         listFrames.getSelection().setMultiple(true);
         listFrames.getSelection().setRequired(false);
         // list.getSelection().setToggle(true);
         ScrollPane scrollPaneFrames = new ScrollPane(listFrames, skin);
-        scrollPaneFrames.setName(SCROLLPANE_FRAME);
+        scrollPaneFrames.setName(SCROLLPANE_FRAME[TYPE_EDITOR_UI]);
         scrollPaneFrames.setFlickScroll(false);
         labelFrames = new Label("", skin); // demos SplitPane respecting widget's minWidth
-        labelFrames.setName(LABEL_FRAMES);
+        labelFrames.setName(LABEL_FRAMES[TYPE_EDITOR_UI]);
         labelFrames.setColor(Color.RED);
         windowFrames = new Table(skin);
         windowFrames.add(labelFrames).row();

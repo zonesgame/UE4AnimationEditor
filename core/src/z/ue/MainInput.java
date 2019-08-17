@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 
 import z.ue.assets.AssetsLoader;
 import z.ue.assets.SFTXAssetsLoader;
+import z.ue.event.ZEventManager;
 import z.ue.input.ZonesChangeListener;
 import z.ue.input.ZonesClickListener;
 import z.ue.input.ZonesInputProcessor;
@@ -22,7 +23,8 @@ import z.ue.utils.ZResize;
 
 import static z.ue.Cons.LIST_ANIMATION;
 import static z.ue.Cons.LIST_FRAME;
-import static z.ue.Core.CENTER;
+import static z.ue.Cons.TYPE_EDITOR_UI;
+import static z.ue.Core.*;
 import static z.ue.Core.aniPlayControl;
 import static z.ue.Core.animations;
 import static z.ue.Core.curAnimation;
@@ -71,6 +73,7 @@ public class MainInput extends ApplicationAdapter {
 		if (isLoop)
 			aniPlayControl.setPlayMode(AnimationPlayControl.PlayMode.LOOP);
 		Assets.init();
+		eventManager = new ZEventManager();
 
 		batch = new SpriteBatch();
 		shapeRenderer = new ShapeRenderer();
@@ -107,16 +110,20 @@ public class MainInput extends ApplicationAdapter {
 
 		loadEditorAnimation(loader.getEditSaveFile());
 
-		List listAnimation = (List) getActor(LIST_ANIMATION);
+		List listAnimation = (List) getActor(LIST_ANIMATION[TYPE_EDITOR_UI]);
 		listAnimation.clearItems();
 		listAnimation.setItems(animations);
-		executionCore.nextAnimation(0);		//  set current play animation
+		executionCore.nextAnimation(0, false);		//  set current play animation
 	}
 
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+		{
+			eventManager.update();
+		}
 
 //		camera.update();
 		batch.setProjectionMatrix(camera.combined);
@@ -162,8 +169,8 @@ public class MainInput extends ApplicationAdapter {
 			int frameIndex = aniPlayControl.getKeyFrame();
 			Frame frame = curAnimation.getFrame(frameIndex);
 			if ( !frame.equals(curFrame)) {
-				executionCore.setCurFrame(frame);
-				((List) getActor(LIST_FRAME)).setSelected(frame);
+				executionCore.setCurFrame(frame, TYPE_EDITOR_UI, false);
+				((List) getActor(LIST_FRAME[TYPE_EDITOR_UI])).setSelected(frame);
 			}
 		}
 

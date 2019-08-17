@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
+import z.ue.event.ZEventManager;
 import z.ue.input.ZonesChangeListener;
 import z.ue.input.ZonesClickListener;
 import z.ue.input.ZonesInputProcessor;
@@ -26,6 +27,9 @@ public class Core {
     public static int frameDuration;
     public static int preWindowsWidth, preWindowsHeight;
     public static String gdxTextureFilter;
+
+    public static boolean isShowBG;
+    public static float alphaBG;
     // settings data end
 
     public static Vec CENTER = new Vec();
@@ -47,6 +51,7 @@ public class Core {
 
     public static Array<ZResize> needResizeArray = new Array(8);
 
+    public static ZEventManager eventManager;
     public static ExecutionCore executionCore;
 
     public static ZonesInputProcessor zInputProcessor;

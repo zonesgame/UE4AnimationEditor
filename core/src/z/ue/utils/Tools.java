@@ -16,8 +16,12 @@ import java.io.OutputStreamWriter;
 import z.ue.Animation;
 import z.ue.Frame;
 import z.ue.Vec;
+import z.ue.event.ZEvent;
 
-import static z.ue.Core.*;
+import static z.ue.Core.animations;
+import static z.ue.Core.eventManager;
+import static z.ue.Core.stage;
+import static z.ue.event.ZEvent.UpdateShowMessage;
 
 /**
  *
@@ -26,6 +30,10 @@ public class Tools {
 
     public static Actor getActor(String name) {
         return stage.getRoot().findActor(name);
+    }
+
+    public static void addZEvent(byte type, Object... objects) {
+        eventManager.addEvent(new ZEvent(type, objects));
     }
 
     public static void loadEditorAnimation(String saveFile) {
@@ -84,7 +92,8 @@ public class Tools {
             StreamUtils.closeQuietly(outWriter);
         }
 
-        executionCore.updateShowMessage("[BLACK]execute save success.........[]");
+        addZEvent(UpdateShowMessage, "[BLACK]execute save success.........[]");
+//        executionCore.updateShowMessage("[BLACK]execute save success.........[]");
     }
 
 }

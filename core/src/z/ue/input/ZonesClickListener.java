@@ -25,7 +25,7 @@ public class ZonesClickListener extends ClickListener {
     public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
         super.touchUp(event, x, y, pointer, button);
 
-        String actorName = event.getRelatedActor().getName();
+        String actorName = event.getListenerActor().getName();
         if (actorName == null || actorName.equals(""))  return;
 
         if (actorName.equals(BUTTON_SAVE)) {
